@@ -3,6 +3,8 @@
 ## Context
 Building a React + TypeScript interactive web app that teaches three concepts (Markov Chains, Monte Carlo Method, Diffie-Hellman Key Exchange) to three audience levels (teen, adult, scientist). Research completed in `research.md`. The app combines visual simulations, hands-on code editors, and guided step-by-step tutorials.
 
+> **Status: implemented.** The app below is built. The notes marked *as built* record where the implementation deliberately differs from the original plan.
+
 ## Tech Stack
 - **Vite + React 18 + TypeScript**
 - **Zustand** for state management (60fps simulation state)
@@ -13,6 +15,8 @@ Building a React + TypeScript interactive web app that teaches three concepts (M
 - **Tailwind CSS** for styling with audience-specific themes
 - **D3 utilities** (scales, shapes only) for data viz helpers
 - **Radix UI** for accessible slider/tooltip primitives
+
+*As built:* Vite + React 19 + TypeScript + Zustand + KaTeX. Framer Motion, D3, Tailwind, Radix and CodeMirror were dropped to keep the bundle small (~90 kB gzipped core). Charts are a small hand-written SVG library (`components/charts.tsx`), animation uses `requestAnimationFrame`, themes are CSS custom properties, and the code editor is a lightweight textarea with a line gutter. Code labs run in a throwaway Web Worker with network APIs removed and a 4 s kill switch.
 
 ## Architecture
 
@@ -57,26 +61,21 @@ Building a React + TypeScript interactive web app that teaches three concepts (M
 | Small numbers version with calculator | One-way function speed demo | Parameter selection (safe primes) |
 | Spy narrative quiz | Man-in-the-middle attack animation | Code lab: implement DH + ECDH |
 
-## Project Structure
+## Project Structure (as built)
 ```
 src/
-├── main.tsx, App.tsx
-├── routes/          (Home, ConceptPage, NotFound)
-├── stores/          (audienceStore, progressStore, simulationStore — zustand)
-├── hooks/           (useAudience, useSimulation, useProgress, useAnimationFrame)
-├── components/
-│   ├── layout/      (AppShell, AudienceSelector, ConceptNav)
-│   ├── shared/      (SimulationControls, CodeEditor, Quiz, StepNavigator, MathBlock, Histogram, TransitionMatrix)
-│   ├── markov/      (StateDiagram, TextPredictor, WeatherSimulator, MatrixEditor, etc.)
-│   ├── montecarlo/  (DartBoard, PiEstimateDisplay, InvestmentSimulator, ConvergenceAnalysis, etc.)
-│   └── diffiehellman/ (ColorMixer, KeyExchangeFlow, SecretMessenger, TLSWalkthrough, etc.)
-├── content/         (9 files: {concept}/{audience}.ts with tutorial steps, quizzes, analogies)
-├── lib/             (markov.ts, montecarlo.ts, diffiehellman.ts, math-utils.ts, random.ts)
-│                    random.ts: seedable PRNG for reproducible simulations; DH secrets use crypto.getRandomValues
-│                    diffiehellman.ts: BigInt + square-and-multiply modPow (naive g**a overflows past 2^53)
-├── styles/          (globals.css, themes/teen.css, adult.css, scientist.css)
-└── types/           (audience.ts, markov.ts, montecarlo.ts, diffiehellman.ts)
+├── main.tsx, App.tsx              shell, routing (HashRouter, so it works from any static host)
+├── types.ts                       Audience, ConceptId, Track/Chapter/Quiz types
+├── routes/                        Home, ConceptPage (lazy-loads one track per concept × audience), Connections
+├── stores/                        audience, progress (zustand + localStorage: chapters, achievements, bests)
+├── hooks/                         useAnimationFrame, useWidth, useInView, useThemeKey, setupCanvas, cssVar
+├── components/                    charts (LineChart/Histogram/Bars), StateDiagram, MatrixEditor, CodeLab, Tex, ui, ErrorBoundary
+├── sims/                          shared simulations: darts engine, Metropolis sampler, modular Clock, weather chain
+├── tracks/{montecarlo,markov,dh}/{teen,adult,scientist}.tsx   9 tracks: chapters, widgets, quizzes
+├── lib/                           random, montecarlo, markov, diffiehellman (+ __tests__)
+└── styles/global.css              audience themes (teen neon / adult midnight / scientist paper)
 ```
+Content lives next to its widgets in each track file rather than in separate `content/` files: each chapter's text, simulation and quiz are tightly coupled.
 
 ## Implementation Order
 1. **Foundation** — Vite scaffold, routing, layout, zustand stores, shared components, CSS themes

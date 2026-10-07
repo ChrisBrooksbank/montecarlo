@@ -8,7 +8,8 @@
 </p>
 
 <p align="center">
-  <img alt="status" src="https://img.shields.io/badge/status-research%20%26%20planning-ffd166?style=for-the-badge">
+  <img alt="status" src="https://img.shields.io/badge/status-playable-3ddc97?style=for-the-badge">
+  <img alt="tracks" src="https://img.shields.io/badge/tracks-9-ffd166?style=for-the-badge">
   <img alt="stack" src="https://img.shields.io/badge/React%20%2B%20TypeScript%20%2B%20Vite-2bd2ff?style=for-the-badge">
   <img alt="license" src="https://img.shields.io/badge/license-MIT-ff3cac?style=for-the-badge">
 </p>
@@ -17,7 +18,7 @@
 
 ## 🎲 What is this?
 
-**Monte Carlo** is an interactive teaching app (in the works) for three ideas that run the modern world while nobody's looking:
+**Monte Carlo** is an interactive teaching app for three ideas that run the modern world while nobody's looking:
 
 | | Concept | The one-line vibe |
 |---|---|---|
@@ -26,6 +27,26 @@
 | 🔐 | **Diffie–Hellman Key Exchange** | *Two strangers agree on a secret while the whole world listens, and the world still learns nothing.* |
 
 Each concept is pitched at **three audiences**, from 🧃 **teen** (games, darts, emoji) to ☕ **adult** (weather, investing, HTTPS) to 🧪 **scientist** (eigenvalues, variance reduction, elliptic curves). That's 9 learning tracks with sliders, live simulations, code labs and a few challenges designed to break your intuition.
+
+<p align="center">
+  <img src="docs/assets/app-home.png" alt="The Monte Carlo app home page: Roll the dice. Learn the universe." width="100%">
+</p>
+
+## 🚀 Play with it
+
+```bash
+npm install
+npm run dev        # → http://localhost:5173
+```
+
+Then pick who you are today (🧃 teen, ☕ adult or 🧪 scientist) and dive in. Switch audiences any time: each concept has its own track per audience, and your progress and achievements are saved in your browser.
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Hot-reloading dev server |
+| `npm run build` | Type-check and build a static site into `dist/` (works from any folder or GitHub Pages) |
+| `npm run preview` | Serve the production build locally |
+| `npm test` | Unit tests for the maths library (Vitest) |
 
 ---
 
@@ -130,23 +151,44 @@ And they collide: **Markov Chain Monte Carlo** is the engine of modern Bayesian 
 
 ---
 
-## 🗺️ What's planned
+## 🕹️ What's inside
+
+Every chapter is a live simulation, not a video. There's a quiz to check yourself, and achievements are hidden all over the place.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/assets/app-darts.png" alt="Teen track: blindfolded darts estimating π"><br><sub>🧃 <b>Blindfolded darts</b>: auto-fire 50,000 darts a second and watch π appear</sub></td>
+<td width="50%"><img src="docs/assets/app-variance.png" alt="Scientist track: variance-reduction race"><br><sub>🧪 <b>Variance reduction showdown</b>: six estimators race on a log-log plot</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src="docs/assets/app-markov-lab.png" alt="Scientist track: N×N Markov matrix lab"><br><sub>🧪 <b>N×N matrix lab</b>: period, reversibility, eigenvalues in ℂ and mixing time, all live</sub></td>
+<td width="50%"><img src="docs/assets/app-dh-real.png" alt="Adult track: real ECDH and AES-GCM in the browser"><br><sub>☕ <b>Real crypto in your browser</b>: ECDH P-256, then HKDF, then AES-GCM via Web Crypto</sub></td>
+</tr>
+</table>
 
 | | 🧃 Teen | ☕ Adult | 🧪 Scientist |
 |---|---|---|---|
-| 🎯 **Monte Carlo** | Dart-throwing game + "Pi Champion" challenge | Investment portfolio simulator, confidence intervals | Variance reduction showdown, Halton/Sobol quasi-MC |
-| 🔗 **Markov** | Text predictor, playlist shuffler | Weather simulator, editable 3×3 matrix | N×N matrix lab, eigenvalues, mixing times |
-| 🔐 **Diffie–Hellman** | Paint-mixing game, "Be Eve" | TLS handshake walkthrough, MITM attack | Cyclic groups, elliptic-curve DH, code lab |
+| 🎯 **Monte Carlo** | Blindfolded darts · *why* it works (grid vs darts) · **Pi Champion** betting game · draw any shape and measure it with darts · birthday-party paradox | Live convergence with 95% bands and parallel universes · 100 confidence intervals · 1,000-future retirement simulator · project-deadline risk | Estimator and CLT, plus d-ball volumes up to 20-D · **6-way variance-reduction race** · rare events and importance sampling · pseudo vs Halton vs Sobol · code lab |
+| 🔗 **Markov** | Predictive text you can retrain (1–3 words of memory) · memoryless playlist · build-your-own emoji chain · Snakes & Ladders solved exactly · *Memoryless Master* | Weather simulator · edit the climate · 1,000-day law of large numbers · interactive **PageRank** web you can rewire | N×N matrix lab (Perron–Frobenius, period, detailed balance, spectrum) · mixing time and spectral gap · **Metropolis–Hastings** sampler · code lab |
+| 🔐 **Diffie–Hellman** | Paint-mixing exchange · clock maths · **Be Eve**: crack keys as the clock grows to 2048 bits · spy mission | Step-through exchange (23 → 64 → 2048 bits) · live one-way-function race · man-in-the-middle and certificates · **real ECDH + AES-GCM** · TLS 1.3 handshake | Cyclic groups on a clock · brute force vs BSGS vs **Pohlig–Hellman** on smooth vs safe primes · elliptic curves over ℝ and 𝔽ₚ · code lab |
 
-**Stack:** Vite · React · TypeScript · Zustand · Framer Motion · Canvas · CodeMirror 6 · KaTeX · Tailwind · Radix UI
+Plus a 🌀 **Connections** page: MCMC (Markov chain + Monte Carlo), and IBM's infamous **RANDU** generator, whose "random" points collapse onto 15 planes when you spin them in 3-D.
 
-📚 Deep dives: **[research.md](research.md)** (the concepts, audiences and sources) · **[plan.md](plan.md)** (architecture and build order)
+**Stack:** Vite · React 19 · TypeScript · Zustand · KaTeX · hand-rolled SVG/Canvas charts · Web Crypto · Web Workers (sandboxed code labs) · Vitest
 
----
+**Under the hood:** a tested maths library in [`src/lib/`](src/lib):
+- seedable PRNGs, plus Halton and Sobol sequences
+- six Monte Carlo estimators
+- Markov chain stationary distributions, plus eigenvalues via Faddeev–LeVerrier and Durand–Kerner
+- BigInt modular exponentiation and Miller–Rabin primality tests
+- baby-step giant-step and Pohlig–Hellman attacks
+- elliptic-curve arithmetic
 
-## 🧪 Status
+Simulations use a fast seedable PRNG. Every cryptographic secret comes from `crypto.getRandomValues`.
 
-**Research & planning.** The ideas are mapped and the architecture is drawn. The visuals above were made with [a small Python script](scripts/generate_readme_assets.py): real simulations, real random numbers. The app itself is next, starting with Monte Carlo because darts are the most fun.
+📚 Deep dives: **[research.md](research.md)** (the concepts, audiences and sources) · **[plan.md](plan.md)** (architecture)
+
+The static visuals at the top of this README were made with [a small Python script](scripts/generate_readme_assets.py): real simulations, real random numbers.
 
 ---
 

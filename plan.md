@@ -62,7 +62,7 @@ Building a React + TypeScript interactive web app that teaches three concepts (M
 src/
 ├── main.tsx, App.tsx
 ├── routes/          (Home, ConceptPage, NotFound)
-├── context/         (AudienceContext, ProgressContext, SimulationContext)
+├── stores/          (audienceStore, progressStore, simulationStore — zustand)
 ├── hooks/           (useAudience, useSimulation, useProgress, useAnimationFrame)
 ├── components/
 │   ├── layout/      (AppShell, AudienceSelector, ConceptNav)

@@ -34,12 +34,18 @@ Each concept is pitched at **three audiences**, from 🧃 **teen** (games, darts
 
 ## 🚀 Play with it
 
+You need [Node.js](https://nodejs.org) 20 or newer.
+
 ```bash
 npm install
 npm run dev        # → http://localhost:5173
 ```
 
-Then pick who you are today (🧃 teen, ☕ adult or 🧪 scientist) and dive in. Switch audiences any time: each concept has its own track per audience, and your progress and achievements are saved in your browser.
+Then pick who you are today (🧃 teen, ☕ adult or 🧪 scientist) and dive in. Switch audiences any time: each concept has its own track per audience.
+
+- **Jump straight to a track** with a link like `#/montecarlo/teen`, `#/markov/scientist` or `#/dh/adult`.
+- **Your progress is saved in your browser:** chapters you've understood, achievements and best scores. The **Your progress** table on the home page shows all 9 tracks at a glance.
+- **Start over** with **Reset progress** under that table. It asks you to confirm on the page before anything is erased.
 
 | Command | What it does |
 |---|---|

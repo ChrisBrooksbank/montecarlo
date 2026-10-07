@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { cssVar, setupCanvas, useThemeKey } from "../hooks";
 import { mixPaint, type RGB } from "../lib/diffiehellman";
@@ -204,6 +204,41 @@ function MiniCanvas({ kind }: { kind: ConceptId }) {
   return <canvas ref={ref} aria-hidden />;
 }
 
+/** Two-step reset built into the page: browser confirm() dialogs are blocked in some embeds. */
+function ResetProgress({ onReset }: { onReset: () => void }) {
+  const [state, setState] = useState<"idle" | "confirm" | "done">("idle");
+  useEffect(() => {
+    if (state !== "confirm" && state !== "done") return;
+    const t = setTimeout(() => setState("idle"), state === "done" ? 2500 : 6000);
+    return () => clearTimeout(t);
+  }, [state]);
+  if (state === "confirm")
+    return (
+      <span className="btn-row" role="group" aria-label="Confirm reset">
+        <span className="dim" style={{ fontSize: "0.9rem" }}>
+          Erase all progress and achievements?
+        </span>
+        <button className="btn small" style={{ borderColor: "var(--bad)", color: "var(--bad)" }} onClick={() => { onReset(); setState("done"); }}>
+          Yes, reset
+        </button>
+        <button className="btn small ghost" onClick={() => setState("idle")} autoFocus>
+          Cancel
+        </button>
+      </span>
+    );
+  if (state === "done")
+    return (
+      <span className="good" role="status" style={{ fontSize: "0.9rem" }}>
+        ✓ Progress reset
+      </span>
+    );
+  return (
+    <button className="btn small ghost" onClick={() => setState("confirm")}>
+      Reset progress
+    </button>
+  );
+}
+
 export default function Home() {
   const { audience, setAudience } = useAudience();
   const completed = useProgress((s) => s.completed);
@@ -327,9 +362,7 @@ export default function Home() {
           </table>
           <div className="btn-row" style={{ marginTop: 12 }}>
             <span className="pill accent">🏅 {achievements} achievements</span>
-            <button className="btn small ghost" onClick={() => confirm("Reset all progress and achievements?") && reset()}>
-              Reset progress
-            </button>
+            <ResetProgress onReset={reset} />
           </div>
         </div>
       </div>

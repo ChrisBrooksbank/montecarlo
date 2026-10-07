@@ -92,7 +92,7 @@ Use randomness to solve problems. If you generate enough random samples, statist
 ## 3. Diffie-Hellman Key Exchange
 
 ### What It Is
-A cryptographic protocol that allows two parties to establish a **shared secret key** over an insecure (public) channel, without ever transmitting the secret itself. Published by Whitfield Diffie and Martin Hellman in 1976.
+A cryptographic protocol that allows two parties to establish a **shared secret key** over an insecure (public) channel, without ever transmitting the secret itself. Published by Whitfield Diffie and Martin Hellman in 1976, building on Ralph Merkle's ideas (it was independently discovered in secret at GCHQ by Malcolm Williamson around 1974).
 
 ### The Paint-Mixing Analogy (Best for Teaching)
 1. Alice and Bob publicly agree on a common paint color (e.g., yellow)
@@ -117,7 +117,7 @@ A cryptographic protocol that allows two parties to establish a **shared secret 
 ### Why It's Secure
 - Based on the **discrete logarithm problem**: given g, p, and g^a mod p, finding a is computationally infeasible for large primes
 - An eavesdropper sees g, p, A, and B but cannot compute s without knowing a or b
-- With sufficiently large primes (2048+ bits), brute force is impractical
+- With sufficiently large primes (2048+ bits, ideally safe primes), even the best known attacks (index calculus / number field sieve) are impractical — naive brute force fails at far smaller sizes
 
 ### Vulnerabilities
 - **Man-in-the-middle attack**: Without authentication, an attacker can intercept and substitute their own values

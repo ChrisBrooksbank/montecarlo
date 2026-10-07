@@ -28,7 +28,7 @@ Building a React + TypeScript interactive web app that teaches three concepts (M
 
 ### Visualization Strategy
 - **SVG + framer-motion** for state diagrams, flow diagrams (interactive, accessible)
-- **Canvas** for particle simulations (dartboard with 100K+ points)
+- **Canvas** for particle simulations (dartboard with 100K+ points) — draw only new darts each frame onto a persistent canvas instead of redrawing every point
 - **D3 utilities** for scales/interpolation only (no d3 DOM manipulation)
 
 ## Feature Matrix
@@ -53,7 +53,7 @@ Building a React + TypeScript interactive web app that teaches three concepts (M
 | Teen | Adult | Scientist |
 |------|-------|-----------|
 | Color picker paint-mixing game | TLS handshake walkthrough | Group theory explorer (cyclic groups) |
-| "Be Eve" hacking challenge (50 attempts) | Small-number mod-arithmetic calculator | Elliptic curve DH visualizer |
+| "Be Eve" hacking challenge (50 attempts; p grows each round until 50 guesses can't cover the key space) | Small-number mod-arithmetic calculator | Elliptic curve DH visualizer |
 | Small numbers version with calculator | One-way function speed demo | Parameter selection (safe primes) |
 | Spy narrative quiz | Man-in-the-middle attack animation | Code lab: implement DH + ECDH |
 

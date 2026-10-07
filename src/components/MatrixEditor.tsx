@@ -13,7 +13,7 @@ export function MatrixEditor({ matrix, labels, colors, onChange, step = 0.05 }: 
   const n = matrix.length;
   const set = (i: number, j: number, v: number) => onChange(matrix.map((row, a) => row.map((x, b) => (a === i && b === j ? v : x))));
   return (
-    <div>
+    <div style={{ maxWidth: "100%", overflowX: "auto" }}>
       <div className="matrix-grid" style={{ gridTemplateColumns: `auto repeat(${n}, auto) auto` }}>
         <span className="hdr">from ↓ to →</span>
         {labels.map((l, j) => (
@@ -33,6 +33,7 @@ export function MatrixEditor({ matrix, labels, colors, onChange, step = 0.05 }: 
               <input
                 key={`${i}-${j}`}
                 className="num-input"
+                style={n > 4 ? { width: "4.4em", padding: "4px 4px", fontSize: "0.82rem" } : undefined}
                 type="number"
                 min={0}
                 max={1}

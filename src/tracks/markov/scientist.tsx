@@ -105,11 +105,9 @@ function MatrixLab() {
           <Seg options={[2, 3, 4, 5, 6, 7].map((k) => ({ value: k, label: String(k) }))} value={n} onChange={(k) => set(resize(P, k))} />
         </div>
       </div>
+      <MatrixEditor matrix={P} labels={labels} colors={states.map((s) => s.color)} onChange={(m) => set(m)} />
       <div className="split">
-        <div style={{ display: "grid", gap: 12, alignContent: "start" }}>
-          <MatrixEditor matrix={P} labels={labels} colors={states.map((s) => s.color)} onChange={(m) => set(m)} />
-          <StateDiagram states={states} matrix={P} dist={a.ok ? a.pi : undefined} height={280} />
-        </div>
+        <StateDiagram states={states} matrix={P} dist={a.ok ? a.pi : undefined} height={300} />
         <div style={{ display: "grid", gap: 12, alignContent: "start" }}>
           {!a.ok ? (
             <div className="callout bad">
@@ -151,8 +149,8 @@ function MatrixLab() {
 function Mixing() {
   const P = useLab((s) => s.P);
   const a = useMemo(() => analyse(P), [P]);
-  const T = 80;
-  const curve = useMemo(() => (a.ok ? tvCurve(P, T) : []), [P, a.ok]);
+  const T = Math.min(600, Math.max(60, 3 * ((a.ok && a.tmix) || 20)));
+  const curve = useMemo(() => (a.ok ? tvCurve(P, T) : []), [P, a.ok, T]);
   if (!a.ok) return <div className="lazy-placeholder">Fix the matrix in the lab above.</div>;
   const lam = 1 - a.gap;
   const data = curve.map((d, t) => [t, Math.max(1e-12, d)] as [number, number]);
@@ -163,7 +161,7 @@ function Mixing() {
         height={300}
         yLog
         xDomain={[0, T]}
-        yDomain={[1e-10, 1.2]}
+        yDomain={[Math.max(1e-12, Math.min(...curve.filter((d) => d > 0), 0.1) / 3), 1.2]}
         xLabel="t (steps)"
         yLabel="max₍ₓ₎ ‖Pᵗ(x,·) − π‖_TV"
         series={[

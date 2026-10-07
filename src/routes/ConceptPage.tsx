@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, type ComponentType } from "react";
+import { ErrorBoundary } from "../components/ErrorBoundary";
 import { useInView } from "../hooks";
 import { Quiz } from "../components/ui";
 import { useAudience } from "../stores/audience";
@@ -67,7 +68,7 @@ function ChapterView({ ch, index, k }: { ch: Chapter; index: number; k: string }
         </h2>
       </div>
       <div className="chapter-intro">{ch.intro}</div>
-      <div className="chapter-body card">{seen ? <Widget /> : <div className="lazy-placeholder">…</div>}</div>
+      <div className="chapter-body card">{seen ? <ErrorBoundary><Widget /></ErrorBoundary> : <div className="lazy-placeholder">…</div>}</div>
       {ch.takeaway && <div className="takeaway">{ch.takeaway}</div>}
       {ch.quiz && <Quiz questions={ch.quiz} onPass={() => complete(k)} />}
       <div className="chapter-foot">

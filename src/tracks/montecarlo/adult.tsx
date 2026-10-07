@@ -242,7 +242,7 @@ function ProjectRisk() {
   const update = (i: number, k: keyof Task, v: string) => setTasks((ts) => ts.map((t, j) => (j === i ? { ...t, [k]: k === "name" ? v : Math.max(0, +v || 0) } : t)));
   return (
     <div className="split">
-      <div>
+      <div className="table-scroll">
         <table className="data">
           <thead>
             <tr>

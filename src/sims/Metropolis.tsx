@@ -104,7 +104,7 @@ export function MetropolisSampler({ compact }: { compact?: boolean }) {
       </div>
       <div className="stats">
         <Stat label="Steps" value={s.samples.length.toLocaleString()} />
-        <Stat label="Acceptance rate" value={`${(acc * 100).toFixed(0)}%`} className={acc > 0.15 && acc < 0.6 ? "good" : "bad"} sub="sweet spot ≈ 25–50%" />
+        <Stat label="Acceptance rate" value={`${(acc * 100).toFixed(0)}%`} className={acc > 0.2 && acc < 0.7 ? "good" : "bad"} sub="1-D sweet spot ≈ 44%" />
         <Stat label="Effective samples" value={Math.round(essVal).toLocaleString()} sub="per last 4,000 steps" />
       </div>
       <p className="dim" style={{ fontSize: "0.92rem" }}>

@@ -38,10 +38,15 @@ export default function App() {
   const loc = useLocation();
   const concept = CONCEPTS.find((c) => loc.pathname.startsWith(`/${c.id}`))?.id ?? "montecarlo";
   useEffect(() => {
-    if (!loc.hash) window.scrollTo(0, 0);
-  }, [loc.pathname, loc.hash]);
+    window.scrollTo(0, 0);
+  }, [loc.pathname]);
+  // Theme lives on <html> so body, scrollbars and overscroll all pick it up.
+  useEffect(() => {
+    document.documentElement.dataset.audience = audience;
+    document.documentElement.dataset.concept = concept;
+  }, [audience, concept]);
   return (
-    <div data-audience={audience} data-concept={concept} id="app-root" style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <div id="app-root" style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <header className="shell-header">
         <Link to="/" className="logo">
           <span className="logo-die">🎲</span> Monte&nbsp;Carlo

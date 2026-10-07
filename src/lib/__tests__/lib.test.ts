@@ -149,6 +149,16 @@ describe("diffie-hellman", () => {
     const ph = pohligHellman(2, Number(h), 1019);
     expect(modPow(2n, BigInt(ph.x), 1019n)).toBe(h);
   });
+  it("Pohlig–Hellman handles prime powers in p − 1", () => {
+    // p − 1 = 2^4 · 3^3 · 5^2 · 7 · k for the first prime of that shape
+    let p = 0;
+    for (let k = 1; !p; k++) { const c = 16 * 27 * 25 * 7 * k + 1; if (isProbablePrime(BigInt(c))) p = c; }
+    const g = primitiveRoots(p)[0];
+    for (const x of [1, 2, 777, p - 2]) {
+      const h = Number(modPow(BigInt(g), BigInt(x), BigInt(p)));
+      expect(pohligHellman(g, h, p).x).toBe(x % (p - 1));
+    }
+  });
   it("elliptic curve group law", () => {
     const c = { a: 2, b: 3, p: 97 };
     const pts = curvePoints(c);

@@ -69,7 +69,7 @@ function Estimator() {
     <div className="split">
       <div>
         <Tex block>{"\\theta = \\mathbb{E}[f(X)] \\quad\\Rightarrow\\quad \\hat\\theta_N = \\frac{1}{N}\\sum_{i=1}^{N} f(X_i)"}</Tex>
-        <Tex block>{"\\mathbb{E}[\\hat\\theta_N] = \\theta, \\qquad \\operatorname{Var}[\\hat\\theta_N] = \\frac{\\sigma^2}{N} \\quad\\Rightarrow\\quad \\text{RMSE} = \\frac{\\sigma}{\\sqrt N}"}</Tex>
+        <Tex block>{"\\mathbb{E}[\\hat\\theta_N] = \\theta, \\quad \\operatorname{Var}[\\hat\\theta_N] = \\frac{\\sigma^2}{N} \\;\\Rightarrow\\; \\text{RMSE} = \\frac{\\sigma}{\\sqrt N}"}</Tex>
         <Tex block>{"\\sqrt{N}\\,(\\hat\\theta_N - \\theta) \\xrightarrow{d} \\mathcal N(0, \\sigma^2) \\;\\Rightarrow\\; \\hat\\theta_N \\pm 1.96\\,\\hat\\sigma/\\sqrt N"}</Tex>
         <p className="dim">
           The rate <Tex>{"N^{-1/2}"}</Tex> has no <Tex>d</Tex> in it. A product quadrature rule with error <Tex>{"O(h^k)"}</Tex> needs <Tex>{"N = h^{-d}"}</Tex> points, so its error in terms of <Tex>N</Tex> is <Tex>{"O(N^{-k/d})"}</Tex> — the curse of dimensionality. The dimension hides in <Tex>{"\\sigma^2"}</Tex> instead.
@@ -176,7 +176,7 @@ function VarianceRace() {
           <thead>
             <tr>
               <th>Method</th>
-              <th className="num">Variance ÷ plain</th>
+              <th className="num">Variance cut (plain ÷ method)</th>
             </tr>
           </thead>
           <tbody>

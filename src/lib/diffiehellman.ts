@@ -168,34 +168,48 @@ export function babyStepGiantStep(g: bigint, h: bigint, p: bigint, order: bigint
 }
 
 /**
- * Pohlig–Hellman: solve g^x = h when the group order n = p−1 is smooth.
- * Returns x and the per-prime-power sub-problems so the UI can show the attack.
+ * Pohlig–Hellman: solve g^x = h (mod p) for a generator g, exploiting a smooth group order n = p − 1.
+ * Each prime power q^e is solved digit by digit in base q (e searches of size q), then glued by CRT.
+ * Returns x and the per-prime-power sub-results so the UI can show the attack.
  */
 export function pohligHellman(g: number, h: number, p: number) {
+  const P = BigInt(p);
   const n = p - 1;
+  const N = BigInt(n);
+  const G = BigInt(g);
+  const H = BigInt(h);
   const parts: { q: number; e: number; x: number }[] = [];
   for (const [q, e] of factorize(n)) {
-    const qe = q ** e;
-    const gi = modPowNum(g, n / qe, p);
-    const hi = modPowNum(h, n / qe, p);
-    let x = 0;
-    for (let k = 0; k < qe; k++) {
-      if (modPowNum(gi, k, p) === hi) {
-        x = k;
-        break;
+    const Q = BigInt(q);
+    const gamma = modPow(G, N / Q, P); // element of order q
+    let x = 0n;
+    let qk = 1n;
+    for (let k = 0; k < e; k++) {
+      // h_k = (g^{-x} h)^{n / q^{k+1}}
+      const hk = modPow((modPow(modInverse(G, P), x, P) * H) % P, N / (qk * Q), P);
+      let d = 0n;
+      let cur = 1n;
+      while (cur !== hk && d < Q) {
+        cur = (cur * gamma) % P;
+        d++;
       }
+      x += d * qk;
+      qk *= Q;
     }
-    parts.push({ q, e, x });
+    parts.push({ q, e, x: Number(x) });
   }
   // Chinese remainder theorem.
-  let x = 0;
-  let mod = 1;
+  let x = 0n;
+  let mod = 1n;
   for (const { q, e, x: r } of parts) {
-    const qe = q ** e;
-    while (x % qe !== r) x += mod;
+    const qe = BigInt(q) ** BigInt(e);
+    const R = BigInt(r);
+    // x ≡ current (mod mod), x ≡ R (mod qe)
+    const t = (((R - x) % qe) + qe) % qe * modInverse(mod % qe, qe) % qe;
+    x += mod * t;
     mod *= qe;
   }
-  return { x, parts };
+  return { x: Number(x), parts };
 }
 
 // ─── Elliptic curves over F_p (small, for visualisation) ──────────────

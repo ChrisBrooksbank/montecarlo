@@ -394,7 +394,11 @@ function DrawShape() {
             setTruth(null);
             maskRef.current = null;
           }}
-          onPointerMove={(e) => drawing && setPath((p) => [...p, pos(e)])}
+          onPointerMove={(e) => {
+            if (!drawing) return;
+            const pt = pos(e); // read the event now; currentTarget is null once the handler returns
+            setPath((p) => [...p, pt]);
+          }}
           onPointerUp={() => setDrawing(false)}
         >
           <canvas ref={shapeRef} style={{ position: "absolute", inset: 0 }} />

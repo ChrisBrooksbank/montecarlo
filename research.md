@@ -31,7 +31,7 @@ A Markov chain is a mathematical system that transitions between states accordin
 ### Key Math
 - Transition matrix rows must sum to 1.0
 - **Stationary distribution**: For an *ergodic* chain (irreducible and aperiodic, finite state space), after enough steps the system settles into a unique stable probability distribution regardless of starting state. Chains that are periodic or reducible may oscillate forever or depend on where they start
-- Multi-step probabilities computed via matrix exponentiation: P(n steps) = M^n
+- Multi-step probabilities computed via matrix powers: the n-step transition matrix is M^n, and a starting distribution π₀ evolves as π₀·M^n
 
 ### Interactive Teaching Ideas
 - **Editable transition matrix** with real-time state diagram visualization
@@ -60,7 +60,7 @@ Use randomness to solve problems. If you generate enough random samples, statist
 2. Randomly throw "darts" (generate random x,y points) inside the square
 3. Count how many land inside the quarter circle (where x^2 + y^2 <= 1)
 4. Pi ~= 4 * (points inside circle / total points)
-5. More darts = better estimate (converges proportional to 1/sqrt(N))
+5. More darts = better estimate (the typical error shrinks proportional to 1/sqrt(N))
 
 ### Other Approachable Examples
 - **Dice games**: Simulate rolling dice 10,000 times to find probability distributions
@@ -140,7 +140,7 @@ A cryptographic protocol that allows two parties to establish a **shared secret 
 ## Cross-Topic Connections
 
 - **Monte Carlo + Markov Chains = MCMC**: Markov Chain Monte Carlo is a powerful sampling method used in Bayesian statistics, machine learning, and physics simulations
-- **Monte Carlo + Diffie-Hellman**: Random number generation quality is critical for cryptographic key generation
+- **Monte Carlo + Diffie-Hellman**: Random number generation quality is critical for cryptographic key generation — simulations can use a fast seedable PRNG, but DH secrets need a cryptographically secure one (CSPRNG)
 - **All three** share the theme of **randomness as a tool** — for prediction (Markov), estimation (Monte Carlo), and security (DH)
 
 ---

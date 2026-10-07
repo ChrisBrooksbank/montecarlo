@@ -8,7 +8,7 @@ Building a React + TypeScript interactive web app that teaches three concepts (M
 - **Zustand** for state management (60fps simulation state)
 - **Framer Motion** for SVG animations
 - **Canvas** for high-particle simulations (dartboard)
-- **CodeMirror 6** for embedded code editors (scientist mode)
+- **CodeMirror 6** for embedded code editors (scientist mode); user code runs in a **Web Worker** sandbox with a timeout (no `window`/`document` access, infinite loops can be killed)
 - **KaTeX** for math rendering
 - **Tailwind CSS** for styling with audience-specific themes
 - **D3 utilities** (scales, shapes only) for data viz helpers
@@ -72,6 +72,8 @@ src/
 │   └── diffiehellman/ (ColorMixer, KeyExchangeFlow, SecretMessenger, TLSWalkthrough, etc.)
 ├── content/         (9 files: {concept}/{audience}.ts with tutorial steps, quizzes, analogies)
 ├── lib/             (markov.ts, montecarlo.ts, diffiehellman.ts, math-utils.ts, random.ts)
+│                    random.ts: seedable PRNG for reproducible simulations; DH secrets use crypto.getRandomValues
+│                    diffiehellman.ts: BigInt + square-and-multiply modPow (naive g**a overflows past 2^53)
 ├── styles/          (globals.css, themes/teen.css, adult.css, scientist.css)
 └── types/           (audience.ts, markov.ts, montecarlo.ts, diffiehellman.ts)
 ```

@@ -8,7 +8,7 @@ Building a React + TypeScript interactive web app that teaches three concepts (M
 - **Zustand** for state management (60fps simulation state)
 - **Framer Motion** for SVG animations
 - **Canvas** for high-particle simulations (dartboard)
-- **CodeMirror 6** for embedded code editors (scientist mode)
+- **CodeMirror 6** for embedded code editors (scientist mode); user code runs in a **Web Worker** sandbox with a timeout (no `window`/`document` access, infinite loops can be killed)
 - **KaTeX** for math rendering
 - **Tailwind CSS** for styling with audience-specific themes
 - **D3 utilities** (scales, shapes only) for data viz helpers
@@ -28,7 +28,7 @@ Building a React + TypeScript interactive web app that teaches three concepts (M
 
 ### Visualization Strategy
 - **SVG + framer-motion** for state diagrams, flow diagrams (interactive, accessible)
-- **Canvas** for particle simulations (dartboard with 100K+ points)
+- **Canvas** for particle simulations (dartboard with 100K+ points) — draw only new darts each frame onto a persistent canvas instead of redrawing every point
 - **D3 utilities** for scales/interpolation only (no d3 DOM manipulation)
 
 ## Feature Matrix
@@ -53,7 +53,7 @@ Building a React + TypeScript interactive web app that teaches three concepts (M
 | Teen | Adult | Scientist |
 |------|-------|-----------|
 | Color picker paint-mixing game | TLS handshake walkthrough | Group theory explorer (cyclic groups) |
-| "Be Eve" hacking challenge (50 attempts) | Small-number mod-arithmetic calculator | Elliptic curve DH visualizer |
+| "Be Eve" hacking challenge (50 attempts; p grows each round until 50 guesses can't cover the key space) | Small-number mod-arithmetic calculator | Elliptic curve DH visualizer |
 | Small numbers version with calculator | One-way function speed demo | Parameter selection (safe primes) |
 | Spy narrative quiz | Man-in-the-middle attack animation | Code lab: implement DH + ECDH |
 
@@ -62,7 +62,7 @@ Building a React + TypeScript interactive web app that teaches three concepts (M
 src/
 ├── main.tsx, App.tsx
 ├── routes/          (Home, ConceptPage, NotFound)
-├── context/         (AudienceContext, ProgressContext, SimulationContext)
+├── stores/          (audienceStore, progressStore, simulationStore — zustand)
 ├── hooks/           (useAudience, useSimulation, useProgress, useAnimationFrame)
 ├── components/
 │   ├── layout/      (AppShell, AudienceSelector, ConceptNav)
@@ -72,6 +72,8 @@ src/
 │   └── diffiehellman/ (ColorMixer, KeyExchangeFlow, SecretMessenger, TLSWalkthrough, etc.)
 ├── content/         (9 files: {concept}/{audience}.ts with tutorial steps, quizzes, analogies)
 ├── lib/             (markov.ts, montecarlo.ts, diffiehellman.ts, math-utils.ts, random.ts)
+│                    random.ts: seedable PRNG for reproducible simulations; DH secrets use crypto.getRandomValues
+│                    diffiehellman.ts: BigInt + square-and-multiply modPow (naive g**a overflows past 2^53)
 ├── styles/          (globals.css, themes/teen.css, adult.css, scientist.css)
 └── types/           (audience.ts, markov.ts, montecarlo.ts, diffiehellman.ts)
 ```

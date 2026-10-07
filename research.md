@@ -30,8 +30,8 @@ A Markov chain is a mathematical system that transitions between states accordin
 
 ### Key Math
 - Transition matrix rows must sum to 1.0
-- **Stationary distribution**: After enough steps, the system settles into a stable probability distribution regardless of starting state
-- Multi-step probabilities computed via matrix exponentiation: P(n steps) = M^n
+- **Stationary distribution**: For an *ergodic* chain (irreducible and aperiodic, finite state space), after enough steps the system settles into a unique stable probability distribution regardless of starting state. Chains that are periodic or reducible may oscillate forever or depend on where they start
+- Multi-step probabilities computed via matrix powers: the n-step transition matrix is M^n, and a starting distribution π₀ evolves as π₀·M^n
 
 ### Interactive Teaching Ideas
 - **Editable transition matrix** with real-time state diagram visualization
@@ -60,7 +60,7 @@ Use randomness to solve problems. If you generate enough random samples, statist
 2. Randomly throw "darts" (generate random x,y points) inside the square
 3. Count how many land inside the quarter circle (where x^2 + y^2 <= 1)
 4. Pi ~= 4 * (points inside circle / total points)
-5. More darts = better estimate (converges proportional to 1/sqrt(N))
+5. More darts = better estimate (the typical error shrinks proportional to 1/sqrt(N))
 
 ### Other Approachable Examples
 - **Dice games**: Simulate rolling dice 10,000 times to find probability distributions
@@ -69,7 +69,7 @@ Use randomness to solve problems. If you generate enough random samples, statist
 - **Integration**: Estimate the area under complex curves by random sampling
 
 ### Real-World Applications
-- **Finance**: Option pricing (Black-Scholes), risk assessment, portfolio optimization
+- **Finance**: Option pricing (especially path-dependent/exotic options where Black-Scholes has no closed form), risk assessment (Value-at-Risk), portfolio optimization
 - **Engineering**: Reliability analysis, failure rate estimation, nuclear reactor design
 - **Physics**: Particle transport, quantum mechanics, statistical mechanics
 - **Project management**: Schedule risk analysis (how likely is the project to finish on time?)
@@ -92,7 +92,7 @@ Use randomness to solve problems. If you generate enough random samples, statist
 ## 3. Diffie-Hellman Key Exchange
 
 ### What It Is
-A cryptographic protocol that allows two parties to establish a **shared secret key** over an insecure (public) channel, without ever transmitting the secret itself. Published by Whitfield Diffie and Martin Hellman in 1976.
+A cryptographic protocol that allows two parties to establish a **shared secret key** over an insecure (public) channel, without ever transmitting the secret itself. Published by Whitfield Diffie and Martin Hellman in 1976, building on Ralph Merkle's ideas (it was independently discovered in secret at GCHQ by Malcolm Williamson around 1974).
 
 ### The Paint-Mixing Analogy (Best for Teaching)
 1. Alice and Bob publicly agree on a common paint color (e.g., yellow)
@@ -117,14 +117,14 @@ A cryptographic protocol that allows two parties to establish a **shared secret 
 ### Why It's Secure
 - Based on the **discrete logarithm problem**: given g, p, and g^a mod p, finding a is computationally infeasible for large primes
 - An eavesdropper sees g, p, A, and B but cannot compute s without knowing a or b
-- With sufficiently large primes (2048+ bits), brute force is impractical
+- With sufficiently large primes (2048+ bits, ideally safe primes), even the best known attacks (index calculus / number field sieve) are impractical — naive brute force fails at far smaller sizes
 
 ### Vulnerabilities
 - **Man-in-the-middle attack**: Without authentication, an attacker can intercept and substitute their own values
 - Solution: Digital signatures or certificate authorities to verify identities
 
 ### Real-World Applications
-- **TLS/SSL**: Every HTTPS connection uses DH (or its elliptic curve variant ECDH)
+- **TLS/SSL**: Every TLS 1.3 HTTPS connection uses ephemeral DH (almost always its elliptic curve variant ECDHE); older TLS versions also allowed RSA key transport
 - **SSH**: Secure shell sessions
 - **VPNs**: IPsec tunnel establishment
 - **Signal Protocol**: End-to-end encrypted messaging (WhatsApp, Signal)
@@ -132,7 +132,7 @@ A cryptographic protocol that allows two parties to establish a **shared secret 
 ### Interactive Teaching Ideas
 - **Paint mixing simulator**: Visual color-mixing demo showing the exchange step-by-step
 - **Small numbers calculator**: Use tiny primes (p=23, g=5) so students can follow the math by hand
-- **Eavesdropper challenge**: Let the student play "Eve" and try to crack the key — showing it's impossible without the secret
+- **Eavesdropper challenge**: Let the student play "Eve" and try to crack the key — with tiny primes (p=23) brute force succeeds quickly, then scale p up to show how the search space explodes and cracking becomes infeasible
 - **Live chat demo**: Two browser windows exchange a key via DH, then send encrypted messages
 
 ---
@@ -140,7 +140,7 @@ A cryptographic protocol that allows two parties to establish a **shared secret 
 ## Cross-Topic Connections
 
 - **Monte Carlo + Markov Chains = MCMC**: Markov Chain Monte Carlo is a powerful sampling method used in Bayesian statistics, machine learning, and physics simulations
-- **Monte Carlo + Diffie-Hellman**: Random number generation quality is critical for cryptographic key generation
+- **Monte Carlo + Diffie-Hellman**: Random number generation quality is critical for cryptographic key generation — simulations can use a fast seedable PRNG, but DH secrets need a cryptographically secure one (CSPRNG)
 - **All three** share the theme of **randomness as a tool** — for prediction (Markov), estimation (Monte Carlo), and security (DH)
 
 ---

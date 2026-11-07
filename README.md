@@ -1,3 +1,7 @@
+<!-- hub-link -->
+> Part of [Chris's app hub](https://chrisbrooksbank-hub.netlify.app) - a directory of all my deployed apps.
+<!-- /hub-link -->
+
 <p align="center">
   <img src="docs/assets/banner.png" alt="Monte Carlo — roll the dice, chain the states, share the secret" width="100%">
 </p>
